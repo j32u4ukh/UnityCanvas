@@ -32,15 +32,17 @@ public class FileDialog : MonoBehaviour
         //    return;
         //}
 
-        Texture2D texture = raw_image.texture as Texture2D;
+        Texture2D texture = new Texture2D(100, 100);
 
-        string path = EditorUtility.OpenFilePanel("Overwrite with png", "", "png");
+        //string path = EditorUtility.OpenFilePanel("Overwrite with png", "", "png");
+        string path = EditorUtility.OpenFilePanelWithFilters("Overwrite with png", "", new string[] { "Image files", "png,jpg,jpeg" });
         print($"path: {path}");
-        //if (path.Length != 0)
-        //{
-        //    var fileContent = File.ReadAllBytes(path);
-        //    texture.LoadImage(fileContent);
-        //}
+
+        if (path.Length != 0)
+        {
+            var fileContent = File.ReadAllBytes(path);
+            texture.LoadImage(fileContent);
+        }
 
         raw_image.texture = texture;
     }
