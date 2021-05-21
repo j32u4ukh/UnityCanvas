@@ -16,7 +16,7 @@ public class DragScrollRect : MonoBehaviour
     [SerializeField] private float spacing_y = 5f;
 
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
         glg = container_obj.GetComponent<GridLayoutGroup>();
         glg.cellSize = new Vector2(cell_x, cell_y);
@@ -36,6 +36,8 @@ public class DragScrollRect : MonoBehaviour
         temp.name = name;
 
         modifyContainerSize();
+
+        // TODO: return GameObject for more setting
     }
 
     public void modifyContainerSize()
