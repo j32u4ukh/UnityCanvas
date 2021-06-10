@@ -1,49 +1,119 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class FileDialog : MonoBehaviour
 {
-    public Button button;
-    public RawImage raw_image;
+    public Button image_btn;
+    public Button music_btn;
+    public Button video_btn;
+
+    public RawImage ri;
+    public AudioSource _as;
+    public VideoPlayer vp;
+    public Text path_label;
 
     // Start is called before the first frame update
     void Start()
     {
-        button.onClick.AddListener(()=>{
-            Apply();
+        image_btn.onClick.AddListener(()=>{
+            string path = GetImagePath();
+            path_label.text = path;
+
+            if (path.Length != 0)
+            {
+                Texture2D texture = new Texture2D(360, 130);
+                var content = File.ReadAllBytes(path);
+                texture.LoadImage(content);
+
+                ri.texture = texture;
+            }
+        });
+
+        music_btn.onClick.AddListener(()=> {
+            string path = GetMusicPath();
+            path_label.text = path;
+
+            AudioClip clip = null;
+            UnityWebRequest request = null;
+
+            try
+            {
+                request = UnityWebRequestMultimedia.GetAudioClip(path, AudioType.WAV);
+                request.SendWebRequest();
+
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(string.Format("{0}, {1}", e.Message, e.StackTrace));
+            }
+
+            try
+            {
+                while (!request.isDone && !request.isNetworkError && !request.isHttpError) { }
+
+                if (!request.isNetworkError && !request.isHttpError)
+                {
+                    clip = DownloadHandlerAudioClip.GetContent(request);
+                    _as.pitch = 1f;
+                    _as.PlayOneShot(clip);
+                }
+                else
+                {
+                    Debug.LogError(request.error);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(string.Format("{0}, {1}", e.Message, e.StackTrace));
+            }
+        });
+
+        video_btn.onClick.AddListener(()=> {
+            string path = GetVideoPath();
+            path_label.text = path;
+
+            vp.url = path;
+            vp.Play();
         });
     }
 
-    // Update is called once per frame
-    void Update()
+    public static string GetFilePath(string title, string file_type, string file_filter, string directory = "")
     {
-        
+        string path = EditorUtility.OpenFilePanelWithFilters(title, directory, 
+            new string[] {file_type, file_filter});
+
+        return path;
     }
 
-    [MenuItem("Example/Overwrite Texture")]
-    void Apply()
+    public static string GetImagePath(string file_filter = "png,jpg,jpeg")
     {
-        //Texture2D texture = Selection.activeObject as Texture2D;
-        //if (texture == null)
-        //{
-        //    EditorUtility.DisplayDialog("Select Texture", "You must select a texture first!", "OK");
-        //    return;
-        //}
+        return GetFilePath(
+            title: "Choose an image", 
+            file_type: "Image files", 
+            file_filter: file_filter, 
+            directory: "");
+    }
 
-        Texture2D texture = new Texture2D(100, 100);
+    public static string GetMusicPath(string file_filter = "wav")
+    {
+        return GetFilePath(
+            title: "Choose a music",
+            file_type: "Music files",
+            file_filter: file_filter,
+            directory: "");
+    }
 
-        //string path = EditorUtility.OpenFilePanel("Overwrite with png", "", "png");
-        string path = EditorUtility.OpenFilePanelWithFilters("Overwrite with png", "", new string[] { "Image files", "png,jpg,jpeg" });
-        print($"path: {path}");
-
-        if (path.Length != 0)
-        {
-            var fileContent = File.ReadAllBytes(path);
-            texture.LoadImage(fileContent);
-        }
-
-        raw_image.texture = texture;
+    public static string GetVideoPath(string file_filter = "avi,flv,wmv,mp4,mov")
+    {
+        return GetFilePath(
+            title: "Choose a video",
+            file_type: "Video files",
+            file_filter: file_filter,
+            directory: "");
     }
 }
