@@ -13,6 +13,7 @@ public class FileDialog : MonoBehaviour
     public Button video_btn;
 
     public RawImage ri;
+    public Texture texture;
     public AudioSource _as;
     public VideoPlayer vp;
     public Text path_label;
@@ -74,6 +75,8 @@ public class FileDialog : MonoBehaviour
         });
 
         video_btn.onClick.AddListener(()=> {
+            ri.texture = texture;
+
             string path = GetVideoPath();
             path_label.text = path;
 
