@@ -65,7 +65,10 @@ namespace UnityExpansion
         }
     }
 
-    public class Array {
+    public class Array
+    {
+        private static System.Random rand = new System.Random();
+
         /// <summary>
         /// 產生按照順序的陣列，可正序、可逆序
         /// </summary>
@@ -95,8 +98,6 @@ namespace UnityExpansion
         /// <returns>打亂後的陣列</returns>
         public static T[] ShuffleArray<T>(T[] array)
         {
-            System.Random rand = new System.Random();
-
             return array.OrderBy(x => rand.Next()).ToArray();
         }
 
@@ -110,12 +111,12 @@ namespace UnityExpansion
 
             if (len > 0)
             {
-                for (i = 0; i < len - 1; i++)
-                {
-                    sb.Append(string.Format("{0:F4}, ", array[i].ToString()));
-                }
+                sb.Append($"{array[0]}");
 
-                sb.Append(string.Format("{0:F4}", array[len - 1].ToString()));
+                for (i = 1; i < len; i++)
+                {
+                    sb.Append($", {array[i]}");
+                }
             }
 
             sb.Append("]");
@@ -124,15 +125,17 @@ namespace UnityExpansion
         }
     }
 
-    public class List {
+    public class List
+    {
+        private static System.Random rand = new System.Random();
+
         public static List<T> ShuffleList<T>(List<T> list)
         {
-            System.Random rand = new System.Random();
-
             return list.OrderBy(x => rand.Next()).ToList();
         }
 
-        public static string ToString<T>(List<T> list) {
+        public static string ToString<T>(List<T> list)
+        {
             StringBuilder sb = new StringBuilder();
             sb.Append("[");
 
@@ -140,12 +143,12 @@ namespace UnityExpansion
 
             if (len > 0)
             {
-                for (i = 0; i < len - 1; i++)
-                {
-                    sb.Append(string.Format("{0:F4}, ", list[i].ToString()));
-                }
+                sb.Append($"{list[0]}");
 
-                sb.Append(string.Format("{0:F4}", list[len - 1].ToString()));
+                for (i = 1; i < len; i++)
+                {
+                    sb.Append($", {list[i]}");
+                }
             }
 
             sb.Append("]");
@@ -153,19 +156,17 @@ namespace UnityExpansion
             return sb.ToString();
         }
 
-        public static string ToString2<T>(List<List<T>> list2)
+        public static string ToString<T>(List<List<T>> list2d)
         {
             List<string> reslut = new List<string>();
 
-            foreach (List<T> list in list2)
+            foreach (List<T> list in list2d)
             {
                 reslut.Add(ToString(list));
             }
 
             return ToString(reslut);
         }
-
-
     }
 
     public class Vector
