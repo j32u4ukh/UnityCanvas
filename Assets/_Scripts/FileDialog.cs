@@ -22,17 +22,19 @@ public class FileDialog : MonoBehaviour
     void Start()
     {
         image_btn.onClick.AddListener(()=>{
-            string path = GetImagePath();
-            path_label.text = path;
+            
 
-            if (path.Length != 0)
-            {
-                Texture2D texture = new Texture2D(360, 130);
-                var content = File.ReadAllBytes(path);
-                texture.LoadImage(content);
+            //string path = GetImagePath();
+            //path_label.text = path;
 
-                ri.texture = texture;
-            }
+            //if (path.Length != 0)
+            //{
+            //    Texture2D texture = new Texture2D(360, 130);
+            //    var content = File.ReadAllBytes(path);
+            //    texture.LoadImage(content);
+
+            //    ri.texture = texture;
+            //}
         });
 
         music_btn.onClick.AddListener(()=> {
@@ -87,10 +89,11 @@ public class FileDialog : MonoBehaviour
 
     public static string GetFilePath(string title, string file_type, string file_filter, string directory = "")
     {
-        string path = EditorUtility.OpenFilePanelWithFilters(title, directory, 
-            new string[] {file_type, file_filter});
+        //string path = EditorUtility.OpenFilePanelWithFilters(title, directory, 
+        //    new string[] {file_type, file_filter});
 
-        return path;
+        //return path;
+        return "";
     }
 
     public static string GetImagePath(string file_filter = "png,jpg,jpeg")

@@ -1265,17 +1265,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2039210102}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00540e97b8bfed743b03536dcd58d16d, type: 3}
+  m_Script: {fileID: 11500000, guid: 75620bc98674fa0429ab1d0e4e44107b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   image_btn: {fileID: 891838125}
   music_btn: {fileID: 825378043}
   video_btn: {fileID: 716823161}
-  ri: {fileID: 723933753}
-  texture: {fileID: 8400000, guid: e0933fd29c27cef45a5860b19633331b, type: 2}
-  _as: {fileID: 723933757}
-  vp: {fileID: 723933756}
-  path_label: {fileID: 1509943633}
 --- !u!4 &2039210104
 Transform:
   m_ObjectHideFlags: 0
